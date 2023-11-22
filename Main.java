@@ -1,143 +1,181 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- * Nama : Davin Wahyu Wardana
- * NIM : 6706223003
- * Kelas : D3IF-4603
  */
+
+//DAVIN WAHYU WARDANA
+//6706223003
+//D3IF-4603
+
 import java.util.ArrayList;
+import java.util.List;
 
-interface Pembayaran {
-    void invoice();
-    int totalBayar(int jumlah, int harga);
+class Equipment {
+    private String type;
+    private String name;
+    private String state;
+
+    public Equipment(String type, String name, String state) {
+        this.type = type;
+        this.name = name;
+        this.state = state;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getState() {
+        return state;
+    }
 }
 
-class Pegawai {
-    protected String nama;
-    private String alamat;
-    private String telepon;
-    private ArrayList<String> idOrder;
+class Skill {
+    private String type;
+    private String name;
+    private String effect;
+    private int power;
 
-    public Pegawai(String nama, String alamat, String telepon) {
-        this.nama = nama;
-        this.alamat = alamat;
-        this.telepon = telepon;
-        this.idOrder = new ArrayList<>();
+    public Skill(String type, String name, String effect, int power) {
+        this.type = type;
+        this.name = name;
+        this.effect = effect;
+        this.power = power;
     }
 
-    public void addOrder(String idOrder) {
-        this.idOrder.add(idOrder);
+    public String getType() {
+        return type;
     }
 
-    public void displayOrder() {
-        for (String id : idOrder) {
-            System.out.println("ID order: " + id);
+    public String getName() {
+        return name;
+    }
+
+    public String getEffect() {
+        return effect;
+    }
+
+    public int getPower() {
+        return power;
+    }
+}
+
+class Chara {
+    private String name;
+    private String race;
+    private String job;
+    private List<Equipment> equipments;
+    private List<Skill> skills;
+
+    public Chara(String name, String race, String job) {
+        this.name = name;
+        this.race = race;
+        this.job = job;
+        this.equipments = new ArrayList<>();
+        this.skills = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRace() {
+        return race;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void addEquipment(String type, String name, String state) {
+        Equipment equipment = new Equipment(type, name, state);
+        equipments.add(equipment);
+    }
+
+    public void addSkill(String type, String name, String effect, int power) {
+        Skill skill = new Skill(type, name, effect, power);
+        skills.add(skill);
+    }
+
+    public List<Equipment> getEquipments() {
+        return equipments;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+}
+
+class Event {
+    private String name;
+    private String date;
+    private String location;
+    private List<Chara> charas;
+
+    public Event(String name, String date, String location) {
+        this.name = name;
+        this.date = date;
+        this.location = location;
+        this.charas = new ArrayList<>();
+    }
+
+    public void charaJoin(Chara chara) {
+        charas.add(chara);
+    }
+
+
+    public void showChara() {
+    int charaCount = 1;
+    for (Chara chara : charas) {
+        System.out.println("Chara " + charaCount + ", chara name: " + chara.getName());
+        System.out.println("Chara Bio:");
+        System.out.println("Nama: " + chara.getName() + ", Race: " + chara.getRace() + ", Job: " + chara.getJob());
+
+        System.out.println("Equipment:");
+        for (Equipment equipment : chara.getEquipments()) {
+            System.out.println("type: " + equipment.getType() + "\nname: " + equipment.getName() + "\nstate: " + equipment.getState());
         }
+
+        System.out.println("Skill:");
+        for (Skill skill : chara.getSkills()) {
+            System.out.println("type: " + skill.getType() + "\nname: " + skill.getName() + "\nefek: " + skill.getEffect() + "\nserangan (+/-): " + skill.getPower());
+        }
+
+        charaCount++;
     }
 }
 
-// Kelas Penjaga
-class Penjaga extends Pegawai {
-    private String sesiMasuk;
-
-    public Penjaga(String nama, String alamat, String telepon, String sesiMasuk) {
-        super(nama, alamat, telepon);
-        this.sesiMasuk = sesiMasuk;
+    public String getName() {
+        return name;
     }
-
-    public String getNamaPenjaga() {
-        return super.nama;
-    }
-
-    public String getSesiMasuk() {
-        return sesiMasuk;
+    public List<Chara> getCharas() {
+        return charas;
     }
 }
 
-class Kurir extends Pegawai {
-    private String wilayahAntar;
+class Player {
+    private String playerName;
+    private List<Chara> charas;
 
-    public Kurir(String nama, String alamat, String telepon, String wilayahAntar) {
-        super(nama, alamat, telepon);
-        this.wilayahAntar = wilayahAntar;
+    public Player(String playerName) {
+        this.playerName = playerName;
+        this.charas = new ArrayList<>();
     }
 
-    public String getWilayahAntar() {
-        return wilayahAntar;
+    public void setCharas(Chara chara) {
+        charas.add(chara);
     }
 
-    public String getNamaKurir() {
-        return super.nama;
-    }
-}
-
-class Order implements Pembayaran {
-    protected String id;
-    protected String namaPembeli;
-    protected String item;
-    protected int jumlah;
-    protected int harga;
-    private String alamatKirim;
-
-    public Order(String id, String namaPembeli, String item, int jumlah, int harga, String alamatKirim) {
-        this.id = id;
-        this.namaPembeli = namaPembeli;
-        this.item = item;
-        this.jumlah = jumlah;
-        this.harga = harga;
-        this.alamatKirim = alamatKirim;
+    public String getPlayerName() {
+        return playerName;
     }
 
-    @Override
-    public void invoice() {
-        System.out.println("INVOICE");
-        System.out.println("PT Davin");
-        System.out.println("Pembelian barang " + item);
-        System.out.println("Jumlah: " + jumlah);
-        System.out.println("Total harga: " + totalBayar(jumlah, harga));
-        System.out.println();
-    }
-
-    @Override
-    public int totalBayar(int jumlah, int harga) {
-        return jumlah * harga;
-    }
-
-    public String getIdOrder() {
-        return id;
-    }
-}
-
-class PreOrder extends Order {
-    private String tanggalKirim;
-    private int dp;
-
-    public PreOrder(String id, String namaPembeli, String item, int jumlah, int harga, String alamatKirim,
-                    String tanggalKirim, int dp) {
-        super(id, namaPembeli, item, jumlah, harga, alamatKirim);
-        this.tanggalKirim = tanggalKirim;
-        this.dp = dp;
-    }
-
-    @Override
-    public void invoice() {
-        System.out.println("INVOICE");
-        System.out.println("PT Davin");
-        System.out.println("Pre-order item: " + super.item);
-        System.out.println("Jumlah: " + super.jumlah);
-        System.out.println("DP yang sudah dibayar: " + dp);
-        System.out.println("Sisa Bayar: " + (totalBayar(super.jumlah, super.harga) - dp));
-        System.out.println("Tanggal kirim: " + tanggalKirim);
-        System.out.println();
-    }
-
-    @Override
-    public int totalBayar(int jumlah, int harga) {
-        return super.totalBayar(jumlah, harga);
-    }
-
-    public String getIdOrderPO() {
-        return super.getIdOrder();
+    public List<Chara> getCharas() {
+        return charas;
     }
 }
 /**
@@ -145,38 +183,57 @@ class PreOrder extends Order {
  * @author user
  */
 public class Main {
+
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
-        Penjaga penjaga = new Penjaga("Rita", "Cikawalo", "085723456", "Pagi");
-        Kurir kurir1 = new Kurir("Dudi", "Bojongsoang", "0812123222", "Cikoneng-Ciwastra");
-        Kurir kurir2 = new Kurir("Riki", "Cikoneng", "0811123212", "Setiabudi");
+        Player player = new Player("Sweet Maccaroon");
 
-        Order item1 = new Order("A001", "Asep", "Hand sanitizer", 10, 20000, "Sukajadi");
-        Order item2 = new Order("A002", "Ita", "Masker wangi", 100, 1500, "Sukajadi 2");
-        PreOrder po1 = new PreOrder("B001", "Dinda", "Hair mask", 2, 50000, "Cikoneng",
-                "25 November 2023", 25000);
+        Chara chara1 = new Chara("To the top", "Human", "Knight");
+        chara1.addEquipment("Clothes", "iron armor", "Defense +10");
+        chara1.addEquipment("Weapon", "Iron Blade", "Attack +10");
+        chara1.addSkill("Attack", "Double slash", "-", 10);
 
-        System.out.println("Invoice untuk setiap pemesanan");
+        Chara chara2 = new Chara("Summer breeze", "Elf", "Wizard");
+        chara2.addEquipment("Hat", "Witch Hat", "Magic +15");
+        chara2.addSkill("Magic", "Fireball", "Fire damage", 20);
 
-        item1.invoice();
-        item2.invoice();
-        po1.invoice();
+        player.setCharas(chara1);
+        player.setCharas(chara2);
 
-        penjaga.addOrder(item1.getIdOrder());
-        penjaga.addOrder(item2.getIdOrder());
-        penjaga.addOrder(po1.getIdOrderPO());
+        System.out.println("Player " + player.getPlayerName() + " memiliki " + player.getCharas().size() + " chara:");
+        int charaCount = 1;
+        for (Chara chara : player.getCharas()) {
+            System.out.println("\nChara " + charaCount + ", chara name: " + chara.getName());
+            System.out.println("Data Chara:");
+            System.out.println("Chara Bio:");
+            System.out.println("Nama: " + chara.getName());
+            System.out.println("Race: " + chara.getRace());
+            System.out.println("Job: " + chara.getJob());
 
-        System.out.println("Karyawan toko: " + penjaga.getNamaPenjaga());
-        penjaga.displayOrder();
+            System.out.println("Equipment:");
+            for (Equipment equipment : chara.getEquipments()) {
+                System.out.println("- " + equipment.getName() + " (" + equipment.getType() + ", " + equipment.getState() + ")");
+            }
 
-        System.out.println("Kurir: " + kurir1.getNamaKurir());
-        System.out.println("Wilayah antar: " + kurir1.getWilayahAntar());
-        kurir1.addOrder(item1.getIdOrder());
-        kurir1.addOrder(item2.getIdOrder());
-        kurir1.displayOrder();
+            System.out.println("Skill:");
+            for (Skill skill : chara.getSkills()) {
+                System.out.println("- " + skill.getName() + " (" + skill.getType() + ", " + skill.getEffect() + ", " + skill.getPower() + ")");
+            }
 
-        System.out.println("Kurir: " + kurir2.getNamaKurir());
-        System.out.println("Wilayah antar: " + kurir2.getWilayahAntar());
-        kurir2.addOrder(po1.getIdOrderPO());
-        kurir2.displayOrder();
+            charaCount++;
+        }
+
+        Event event1 = new Event("Ladang Bunga Maut", "11 - 12 November 2023", "South village manor");
+        event1.charaJoin(chara1);
+        event1.charaJoin(chara2);
+
+        System.out.println("\nChara yang mengikuti event " + event1.getName() + ":");
+        int eventCharaCount = 1;
+        for (Chara chara : event1.getCharas()) {
+            System.out.println("- Chara " + chara.getName() + ", race: " + chara.getRace() + ", job: " + chara.getJob());
+            eventCharaCount++;
+        }
     }
 }
